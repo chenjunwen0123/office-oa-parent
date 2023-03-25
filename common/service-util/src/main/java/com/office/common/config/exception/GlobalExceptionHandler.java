@@ -1,4 +1,4 @@
-package com.office.common.config.handler;
+package com.office.common.config.exception;
 
 import com.office.common.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,17 +15,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler {
+    // 全局异常处理
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public Result<String> error(Exception e){
         e.printStackTrace();
         return Result.fail(e.getMessage()).message("全局异常捕捉");
     }
-
+    // 特定异常处理
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public Result<String> error(RuntimeException e){
         e.printStackTrace();
         return Result.fail(e.getMessage()).message("运行时异常捕捉");
+    }
+    // 自定义异常处理
+    @ExceptionHandler(CustomException.class)
+    @ResponseBody
+    public Result<String> error(CustomException e){
+        e.printStackTrace();
+        return Result.fail(e.getMsg()).message("自定义异常处理").code(e.getCode());
     }
 }
